@@ -3,7 +3,7 @@
 ## Extract pictures from PDF
 
 ```bash
-pdfimages -f 1 -l 33 -j 300-accords-de-piano-guide-et-dictionnaire-2015.pdf pictures/
+pdfimages -f 9 -l 33 -j 300-accords-de-piano-guide-et-dictionnaire-2015.pdf pictures/
 ```
 
 ## Split a picture to get the whole chores
