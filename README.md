@@ -28,3 +28,10 @@ convert test_chores/output_013_chores_0.jpg -crop 3x1-30-30@\!  +repage  +adjoin
 axel@axel-UX303LA[00:46:39]:~/Desktop/projects/piano-training/scripts$ namef="-toto.txt"
 axel@axel-UX303LA[00:48:07]:~/Desktop/projects/piano-training/scripts$ mv -- $namef ${namef#"-"}
 ```
+## Classes
+
+ExtractChoresFromCSV
+ChoresMode
+MajorMinorChoresMode
+AdvancedChoresMode
+SettingsChores
