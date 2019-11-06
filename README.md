@@ -30,8 +30,8 @@ axel@axel-UX303LA[00:48:07]:~/Desktop/projects/piano-training/scripts$ mv -- $na
 ```
 ## Classes
 
-ExtractChoresFromCSV
-ChoresMode
-MajorMinorChoresMode
-AdvancedChoresMode
-SettingsChores
+ExtractChoresFromCSV<br/>
+ChoresMode<br/>
+MajorMinorChoresMode<br/>
+AdvancedChoresMode<br/>
+SettingsChores<br/>
