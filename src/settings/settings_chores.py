@@ -1,18 +1,32 @@
 #!/usr/bin/python
 
 class SettingsChores:
-   ordered = True
-   
-   "timer in ms"
-   timer = 500
 
-   def __init__(self, name, salary):
-      self.name = name
-      self.salary = salary
-      Employee.empCount += 1
+   def __init__(self, ordered = True, timer = 500, sourceFile = '../../source/letter_schema_chores.csv'):
+      self._ordered = ordered
+      self._timer = timer
+      self._sourceFile = sourceFile
    
-   def displayCount(self):
-     print "Total Employee %d" % Employee.empCount
+   @property
+	def ordered(self):
+		return self._ordered
 
-   def displayEmployee(self):
-      print "Name : ", self.name,  ", Salary: ", self.salary
+	@ordered.setter
+	def ordered(self, ordered):
+		self._ordered = ordered
+   
+   @property
+	def timer(self):
+		return self._timer
+
+	@timer.setter
+	def timer(self, timer):
+		self._timer = timer
+
+   @property
+	def sourceFile(self):
+		return self._sourceFile
+
+	@sourceFile.setter
+	def sourceFile(self, sourceFile):
+		self._sourceFile = sourceFile
