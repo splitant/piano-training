@@ -7,7 +7,7 @@ class ExtractChoresFromCSV:
 		def __init__(self, sourceFile, fieldNames = ['chore_label', 'chore_picture']):
 			self._sourceFile = sourceFile
 			self._fieldNames = fieldNames
-			self._chores = []
+			self._chores = dict()
 
 		@property
 		def sourceFile(self):

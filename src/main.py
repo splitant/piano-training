@@ -1,23 +1,23 @@
 # coding: utf-8
- 
-from Tkinter import * 
-import json
-import csv
 
-fenetre = Tk()
+import tkinter as tk
 
-label = Label(fenetre, text="Hello World")
-label.pack()
+class Application(tk.Frame):
+    def __init__(self, racine=None):
+        tk.Frame.__init__(self, racine)
+        self.racine = racine
+        self.create_widgets()
 
-csvfile = open('../letter_schema_chores.csv', 'r')
-jsonfile = open('../letter_schema_chores.json', 'w')
+    def create_widgets(self):
+        self.button_play = tk.Button(self.racine, text="Play",
+                                 fg="white", command=self.quit)
+        self.button_settings = tk.Button(self.racine, text="Settings",
+                                 fg="white", command=self.quit)
+        self.button_play.pack()
+        self.button_settings.pack()
 
-fieldnames = ("Letter","Schema")
-reader = csv.DictReader(csvfile, fieldnames)
-
-for row in reader:
-    print row
-    json.dump(row, jsonfile)
-    jsonfile.write('\n')
-
-fenetre.mainloop()
+if __name__ == "__main__":
+    racine = tk.Tk()
+    racine.title("Piano Training")
+    app = Application(racine)
+    racine.mainloop()
