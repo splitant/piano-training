@@ -3,22 +3,12 @@ try:
 except:
     import Tkinter as tk
 
-class Application(tk.Frame):
-    def __init__(self, racine=None):
-        tk.Frame.__init__(self, racine)
-        self.racine = racine
-        self.create_widgets()
+import view as v
 
-    def create_widgets(self):
-        self.button_play = tk.Button(self.racine, text="Play",
-                                 fg="grey", command=self.quit)
-        self.button_settings = tk.Button(self.racine, text="Settings",
-                                  fg="grey", command=self.quit)
-        self.button_play.pack()
-        self.button_settings.pack()
-
-if __name__ == "__main__":
+if __name__ == "__main__":    
     racine = tk.Tk()
     racine.title("Piano Training")
-    app = Application(racine)
+    main_frame = tk.Frame(racine, width=300, height=300)
+    main_frame.pack()
+    app = v.ButtonsFrame(main_frame)
     racine.mainloop()

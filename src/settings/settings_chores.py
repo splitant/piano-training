@@ -3,19 +3,19 @@
 
 class SettingsChores:
 
-	def __init__(self, smartRandom=True, ordered=True, grouped=False, timer=500, sourceFile='../../source/letter_schema_chores.csv'):
-		self._smartRandom = smartRandom
+	def __init__(self, loop=True, ordered=True, grouped=False, timer=500, sourceFile='../../source/letter_schema_chores.csv'):
+		self._loop = loop
 		self._ordered = ordered
 		self._timer = timer
 		self._sourceFile = sourceFile
 
 	@property
-	def smartRandom(self):
-		return self._smartRandom
+	def loop(self):
+		return self._loop
 
-	@smartRandom.setter
-	def smartRandom(self, smartRandom):
-		self._smartRandom = smartRandom
+	@loop.setter
+	def loop(self, loop):
+		self._loop = loop
 
 	@property
 	def ordered(self):
