@@ -5,8 +5,8 @@ except:
 
 
 class ButtonsFrame(tk.Frame):
-    def __init__(self, racine=None, width=100, height=100):
-        tk.Frame.__init__(self, racine, width=width, height=height)
+    def __init__(self, racine=None):
+        tk.Frame.__init__(self, racine)
         self.racine = racine
         self.create_widgets()
 
