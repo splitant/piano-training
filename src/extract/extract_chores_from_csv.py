@@ -4,9 +4,10 @@ import csv
 
 class ExtractChoresFromCSV:
 
-		def __init__(self, sourceFile, fieldNames = ['chore_label', 'chore_picture']):
+		def __init__(self, sourceFile, fieldNames = ['chore_label', 'chore_picture'], directoryPicture = '../../pictures/chores/'):
 			self._sourceFile = sourceFile
 			self._fieldNames = fieldNames
+			self._directoryPicture = directoryPicture
 			self._chores = dict()
 
 		@property
@@ -32,6 +33,14 @@ class ExtractChoresFromCSV:
 		@fieldNames.setter
 		def fieldNames(self, fieldNames):
 			self._fieldNames = fieldNames
+
+		@property
+		def directoryPicture(self):
+			return self._directoryPicture
+
+		@directoryPicture.setter
+		def directoryPicture(self, directoryPicture):
+			self._directoryPicture = directoryPicture
 
 		def importChores(self):
 			csvFile = open(self._sourceFile, 'r')

@@ -3,6 +3,7 @@
 import random
 
 class ChoresMode:
+    MODE = 'Normal'
 
     def __init__(self, chores, settings):
         self._chores = chores
@@ -27,3 +28,33 @@ class ChoresMode:
     def sortChores(self):
         if not self._settings.ordered:
             random.shuffle(self._chores)
+
+class MinorMajorChoresMode(ChoresMode):
+    MODE = 'Minor - Major'
+
+    def __init__(self, chores, settings):
+        super(MinorMajorChoresMode, self).__init__(chores, settings)
+
+    def is_minor(self, chore):
+        return len(chore) == 1
+
+    def is_major(self, chore):
+        return len(chore) == 2 and chore[len(chore) - 1] == 'm'
+
+    def sortChores(self):
+        super(MinorMajorChoresMode, self).sortChores()
+        self._chores = filter(lambda chore: self.is_major(
+            chore) or self.is_minor(chore), self._chores)
+
+class SimpleChoresMode(ChoresMode):
+    MODE = 'Single'
+
+    def __init__(self, chores, settings):
+        super(SimpleChoresMode, self).__init__(chores, settings)
+
+    def is_simple(self, chore):
+        return len(chore) == 1
+
+    def sortChores(self):
+        super(SimpleChoresMode, self).sortChores()
+        self._chores = filter(lambda chore: self.is_simple(chore), self._chores)
