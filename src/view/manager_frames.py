@@ -3,6 +3,7 @@ try:
 except:
     import Tkinter as tk
 
+import ImageTk, Image
 import controller as cont
 
 
@@ -10,16 +11,16 @@ class ManagerFrames(tk.Frame):
     def __init__(self, root=None):
         tk.Frame.__init__(self, root)
         self.root = root
+        self.controller = cont.ControllerChores()
+        self.frames = {}
+
         self.pack(side="top", fill="both", expand=True)
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.controller = cont.ControllerChores()
-
         self.create_frames()
 
     def create_frames(self):
-        self.frames = {}
         for F in (HomepageFrame, ChoreFrame, SettingsFrame):
             page_name = F.__name__
             frame = F(manager_frame=self)
@@ -68,11 +69,12 @@ class ChoreFrame(tk.Frame):
         tk.Frame.__init__(self, manager_frame)
         self.manager_frame = manager_frame
         self.index = 0
-        
+
         self.create_widgets()
 
     def create_widgets(self):
         self.container = tk.Frame(self.manager_frame)
+
         self.button_play = tk.Button(self.container, text="Play",
                                      fg="black", command=self.button_play_command)
         self.button_settings = tk.Button(self.container, text="Settings",

@@ -46,5 +46,5 @@ class ExtractChoresFromCSV:
 			csvFile = open(self._sourceFile, 'r')
 			reader = csv.DictReader(csvFile, self._fieldNames)
 			for row in reader:
-				self._chores[row[self._fieldNames[0]]] = row[self._fieldNames[1]]
+				self._chores[row[self._fieldNames[0]]] = self._directoryPicture + row[self._fieldNames[1]]
 
