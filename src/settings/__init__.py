@@ -1,1 +1,1 @@
-from settings_chores import SettingsChores
+from settings.settings_chores import SettingsChores

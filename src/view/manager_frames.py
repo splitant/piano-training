@@ -3,8 +3,9 @@ try:
 except:
     import Tkinter as tk
 
-import ImageTk, Image
+from PIL import Image, ImageTk
 import controller as cont
+import threading as thr
 
 
 class ManagerFrames(tk.Frame):
@@ -69,27 +70,40 @@ class ChoreFrame(tk.Frame):
         tk.Frame.__init__(self, manager_frame)
         self.manager_frame = manager_frame
         self.index = 0
+        self.chore_length = len(self.manager_frame.controller.choreMode.chores)
+        self.timeout = self.manager_frame.controller.settings.timer
 
         self.create_widgets()
 
     def create_widgets(self):
         self.container = tk.Frame(self.manager_frame)
 
-        self.button_play = tk.Button(self.container, text="Play",
-                                     fg="black", command=self.button_play_command)
-        self.button_settings = tk.Button(self.container, text="Settings",
-                                         fg="black", command=self.button_settings_command)
+        chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
+        chore_data_path_picture = self.manager_frame.controller.choreData.chores[chore_data_label]
 
-        self.button_play.grid(row=0, column=0, sticky='nesw', pady=10)
-        self.button_settings.grid(row=1, column=0, sticky='nesw', pady=10)
+        self.label_chore = tk.Label(self.container, text=chore_data_label)
+        self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
+        self.label_picture_chore = tk.Label(self.container, image=self.picture_chore)
+
+        self.label_chore.grid(row=0, column=0, sticky='nesw', pady=10)
+        self.label_picture_chore.grid(row=1, column=0, sticky='nesw', pady=10)
         self.container.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-    def button_play_command(self):
-        self.manager_frame.show_frame('ChoreFrame')
+    def change_chore(self):
+        self.index = self.index + 1
 
-    def button_settings_command(self):
-        self.manager_frame.show_frame('SettingsFrame')
-
+        if self.index < self.chore_length:
+            chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
+            chore_data_path_picture = self.manager_frame.controller.choreData.chores[chore_data_label]
+            
+            self.label_chore.config(text=chore_data_label)
+            self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
+            self.label_picture_chore.config(image=self.picture_chore)
+            
+            timer = thr.Timer(self.timeout, self.change_chore)
+            timer.start()
+        else:
+            self.manager_frame.show_frame('HomepageFrame')
 
 class SettingsFrame(tk.Frame):
     def __init__(self, manager_frame):

@@ -47,7 +47,7 @@ class ControllerChores:
 			module = i.import_module('mode.chores_mode')
 			class_ = getattr(module, self._settings.mode)
 
-			self._choreMode = class_(self._choreData.keys(), self.settings)
+			self._choreMode = class_(self._choreData.keys(), self._settings)
 			self._choreMode.sortChores()
 
 
