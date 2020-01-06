@@ -103,7 +103,7 @@ class ChoreFrame(tk.Frame):
             timer = thr.Timer(self.timeout, self.change_chore)
             timer.start()
         else:
-            self.manager_frame.show_frame('HomepageFrame')
+            self.manager_frame.show_frame('SettingsFrame')
 
 class SettingsFrame(tk.Frame):
     def __init__(self, manager_frame):
