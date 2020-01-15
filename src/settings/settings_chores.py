@@ -1,10 +1,12 @@
 #!/usr/bin/python
 
 import sqlite3
+import sys
+import inspect
 
 class SettingsChores:
 
-	def __init__(self, loop=True, ordered=True, grouped=False, timer=500, sourceFile='../../source/letter_schema_chores.csv', mode='ChoresMode'):
+	def __init__(self, loop=True, ordered=True, timer=500, sourceFile='../../source/letter_schema_chores.csv', mode='ChoresMode'):
 		self._loop = loop
 		self._ordered = ordered
 		self._timer = timer
@@ -117,5 +119,8 @@ class SettingsChores:
 		conn.close()
 
 		return data[0] if data is not None else 0
+	
+	def availableModes(self):
+		return dict(inspect.getmembers(sys.modules["mode.chores_mode"], inspect.isclass)).keys()
 
 

@@ -114,6 +114,27 @@ class SettingsFrame(tk.Frame):
 
     def create_widgets(self):
         self.container = tk.Frame(self.manager_frame)
+        self.settings = self.manager_frame.controller.settings
+        
+        self.loop_var = tk.BooleanVar()
+        self.loop_var.set(self.settings.loop)
+        self.loop = tk.Checkbutton(
+            self.container, text="loop", variable=self.loop_var)
+        
+        self.ordered_var = tk.BooleanVar()
+        self.ordered_var.set(self.settings.ordered)
+        self.ordered = tk.Checkbutton(
+            self.container, text="ordered", variable=self.loop_var)
+
+        self.timer_var = tk.IntVar()
+        self.timer_var.set(self.settings.timer)
+        self.timer = tk.Scale(
+            self.container, orient='horizontal', from_=100, to=5000,
+            resolution=100, length=350, variable=self.timer_var,
+            label='Duration (ms)')
+
+        """ TODO : ADD ComboBox + FileInput + Buttons """
+
         self.button_play = tk.Button(self.container, text="Play",
                                      fg="black", command=self.button_play_command)
         self.button_settings = tk.Button(self.container, text="Settings",
