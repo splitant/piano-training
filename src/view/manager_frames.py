@@ -6,7 +6,7 @@ except:
 from PIL import Image, ImageTk
 import controller as cont
 import threading as thr
-
+import importlib as i
 
 class ManagerFrames(tk.Frame):
     def __init__(self, root=None):
@@ -133,7 +133,15 @@ class SettingsFrame(tk.Frame):
             resolution=100, length=350, variable=self.timer_var,
             label='Duration (ms)')
 
-        """ TODO : ADD ComboBox + FileInput + Buttons """
+        module = i.import_module('mode.chores_mode')
+        class_name_chore_modes = self.settings.availableModes()
+        self.chore_modes = dict()
+        for class_name_chore_mode in class_name_chore_modes:
+            class_ = getattr(module, class_name_chore_mode)
+            self.chore_modes[class_name_chore_mode] = class_.MODE
+        self.modes = tk.ComboBox(self.container, values=self.chore_modes.values())
+
+        """ TODO : ADD FileInput + Buttons """
 
         self.button_play = tk.Button(self.container, text="Play",
                                      fg="black", command=self.button_play_command)
