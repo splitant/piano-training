@@ -139,21 +139,64 @@ class SettingsFrame(tk.Frame):
         for class_name_chore_mode in class_name_chore_modes:
             class_ = getattr(module, class_name_chore_mode)
             self.chore_modes[class_name_chore_mode] = class_.MODE
-        self.modes = tk.ComboBox(self.container, values=self.chore_modes.values())
+        self.mode_var = tk.StringVar()
+        self.modes = tk.Combobox(
+            self.container, textvariable=self.mode_var, values=self.chore_modes.values())
+        self.modes.current(0)
 
-        """ TODO : ADD FileInput + Buttons """
+        self.container_source_file = tk.Frame(self.container)
+        self.source_file_var = tk.StringVar()
+        self.source_file_var.set(self.settings.sourceFile)
+        self.source_file = tk.Entry(self.container_source_file, variable=self.source_file_var)
+        self.source_file_button = tk.Button(self.container_source_file, text="Browse file",
+                                            fg="black", command=self.get_filename_csv)
 
-        self.button_play = tk.Button(self.container, text="Play",
-                                     fg="black", command=self.button_play_command)
-        self.button_settings = tk.Button(self.container, text="Settings",
-                                         fg="black", command=self.button_settings_command)
+        self.source_file.grid(row=0, column=0, sticky='nesw', padx=5)
+        self.source_file_button.grid(row=0, column=1, sticky='nesw', padx=5)
+
+        self.container_buttons = tk.Frame(self.container)
+        self.button_save = tk.Button(self.container_buttons, text="Save",
+                                     fg="black", command=self.button_save_command)
+        self.button_back = tk.Button(self.container_buttons, text="Back",
+                                     fg="black", command=self.button_back_command)
+
+        self.button_save.grid(row=0, column=0, sticky='nesw', padx=5)
+        self.button_back.grid(row=0, column=1, sticky='nesw', padx=5)
 
         self.button_play.grid(row=0, column=0, sticky='nesw', pady=10)
         self.button_settings.grid(row=1, column=0, sticky='nesw', pady=10)
         self.container.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-    def button_play_command(self):
-        self.manager_frame.show_frame('ChoreFrame')
+    def button_save_command(self):
+        error = self.validation()
 
-    def button_settings_command(self):
-        self.manager_frame.show_frame('SettingsFrame')
+        if len(error) > 0:
+            tk.messagebox.showerror('Error', error)
+        else:
+            self.settings.loop = self.loop_var.get()
+            self.settings.ordered = self.ordered_var.get()
+            self.settings.timer = self.timer_var.get()
+            self.settings.sourceFile = self.source_file_var.get()
+            self.settings.mode = self.mode_var.get()
+            self.settings.saveSettings()
+            tk.messagebox.showinfo('Info', 'Settings updated.')
+
+    def button_back_command(self):
+        self.manager_frame.show_frame('HomepageFrame')
+    
+    def validation(self):
+        if not self.source_file_var.get():
+            return 'File entry must not empty !'
+        
+        return ''
+
+    def get_filename_csv(self):
+        filename = tk.filedialog.askopenfilename(
+            title='Select file',
+            initialdir='/',
+            filetypes=[
+                ("CSV Files", "*.csv"),
+                ("All files", "*")
+            ])
+        self.source_file_var.set(filename)
+        
