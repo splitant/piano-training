@@ -5,9 +5,9 @@ except:
 
 import view as v
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     racine = tk.Tk()
     racine.title("Piano Training")
     racine.geometry("500x500")
-    app = v.ButtonsFrame(racine)
+    app = v.ManagerFrames(racine)
     racine.mainloop()

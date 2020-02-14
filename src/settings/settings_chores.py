@@ -6,7 +6,7 @@ import inspect
 
 class SettingsChores:
 
-	def __init__(self, loop=True, ordered=True, timer=500, sourceFile='../../source/letter_schema_chores.csv', mode='ChoresMode'):
+	def __init__(self, loop=True, ordered=True, timer=500, sourceFile='../source/letter_schema_chores.csv', mode='ChoresMode'):
 		self._loop = loop
 		self._ordered = ordered
 		self._timer = timer

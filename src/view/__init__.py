@@ -1,1 +1,1 @@
-from view.buttons_frame import ButtonsFrame
+from view.manager_frames import *

@@ -4,7 +4,7 @@ import csv
 
 class ExtractChoresFromCSV:
 
-		def __init__(self, sourceFile, fieldNames = ['chore_label', 'chore_picture'], directoryPicture = '../../pictures/chores/'):
+		def __init__(self, sourceFile, fieldNames = ['chore_label', 'chore_picture'], directoryPicture = '../pictures/chores/'):
 			self._sourceFile = sourceFile
 			self._fieldNames = fieldNames
 			self._directoryPicture = directoryPicture

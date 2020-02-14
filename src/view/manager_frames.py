@@ -1,7 +1,9 @@
 try:
     import tkinter as tk
+    from tkinter.ttk import Combobox
 except:
     import Tkinter as tk
+    from ttk import Combobox
 
 from PIL import Image, ImageTk
 import controller as cont
@@ -79,7 +81,7 @@ class ChoreFrame(tk.Frame):
         self.container = tk.Frame(self.manager_frame)
 
         chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
-        chore_data_path_picture = self.manager_frame.controller.choreData.chores[chore_data_label]
+        chore_data_path_picture = self.manager_frame.controller.choreData[chore_data_label]
 
         self.label_chore = tk.Label(self.container, text=chore_data_label)
         self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
@@ -94,7 +96,7 @@ class ChoreFrame(tk.Frame):
 
         if self.index < self.chore_length:
             chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
-            chore_data_path_picture = self.manager_frame.controller.choreData.chores[chore_data_label]
+            chore_data_path_picture = self.manager_frame.controller.choreData[chore_data_label]
             
             self.label_chore.config(text=chore_data_label)
             self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
@@ -140,14 +142,15 @@ class SettingsFrame(tk.Frame):
             class_ = getattr(module, class_name_chore_mode)
             self.chore_modes[class_name_chore_mode] = class_.MODE
         self.mode_var = tk.StringVar()
-        self.modes = tk.Combobox(
+        self.modes = Combobox(
             self.container, textvariable=self.mode_var, values=self.chore_modes.values())
         self.modes.current(0)
 
         self.container_source_file = tk.Frame(self.container)
         self.source_file_var = tk.StringVar()
         self.source_file_var.set(self.settings.sourceFile)
-        self.source_file = tk.Entry(self.container_source_file, variable=self.source_file_var)
+        self.source_file = tk.Entry(
+            self.container_source_file, textvariable=self.source_file_var)
         self.source_file_button = tk.Button(self.container_source_file, text="Browse file",
                                             fg="black", command=self.get_filename_csv)
 
@@ -163,8 +166,13 @@ class SettingsFrame(tk.Frame):
         self.button_save.grid(row=0, column=0, sticky='nesw', padx=5)
         self.button_back.grid(row=0, column=1, sticky='nesw', padx=5)
 
-        self.button_play.grid(row=0, column=0, sticky='nesw', pady=10)
-        self.button_settings.grid(row=1, column=0, sticky='nesw', pady=10)
+        self.loop.grid(row=0, column=0, sticky='nesw', pady=10)
+        self.ordered.grid(row=1, column=0, sticky='nesw', pady=10)
+        self.timer.grid(row=2, column=0, sticky='nesw', pady=10)
+        self.modes.grid(row=3, column=0, sticky='nesw', pady=10)
+        self.container_source_file.grid(
+            row=4, column=0, sticky='nesw', pady=10)
+        self.container_buttons.grid(row=5, column=0, sticky='nesw', pady=10)
         self.container.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def button_save_command(self):
