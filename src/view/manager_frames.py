@@ -1,5 +1,7 @@
 try:
     import tkinter as tk
+    import tkinter.filedialog
+    import tkinter.messagebox
     from tkinter.ttk import Combobox
 except:
     import Tkinter as tk
@@ -10,23 +12,24 @@ import controller as cont
 import threading as thr
 import importlib as i
 
-class ManagerFrames(tk.Frame):
-    def __init__(self, root=None):
-        tk.Frame.__init__(self, root)
-        self.root = root
+class ManagerFrames(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+
+        self.container = tk.Frame(self)
         self.controller = cont.ControllerChores()
         self.frames = {}
 
-        self.pack(side="top", fill="both", expand=True)
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.container.pack(side="top", fill="both", expand=True)
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
 
         self.create_frames()
 
     def create_frames(self):
         for F in (HomepageFrame, ChoreFrame, SettingsFrame):
             page_name = F.__name__
-            frame = F(manager_frame=self)
+            frame = F(parent=self.container, manager_frame=self)
             self.frames[page_name] = frame
 
             # put all of the pages in the same location;
@@ -43,8 +46,8 @@ class ManagerFrames(tk.Frame):
 
 
 class HomepageFrame(tk.Frame):
-    def __init__(self, manager_frame):
-        tk.Frame.__init__(self, manager_frame)
+    def __init__(self, parent, manager_frame):
+        tk.Frame.__init__(self, parent)
         self.manager_frame = manager_frame
 
         self.create_widgets()
@@ -68,8 +71,8 @@ class HomepageFrame(tk.Frame):
 
 
 class ChoreFrame(tk.Frame):
-    def __init__(self, manager_frame):
-        tk.Frame.__init__(self, manager_frame)
+    def __init__(self, parent, manager_frame):
+        tk.Frame.__init__(self, parent)
         self.manager_frame = manager_frame
         self.index = 0
         self.chore_length = len(self.manager_frame.controller.choreMode.chores)
@@ -108,8 +111,8 @@ class ChoreFrame(tk.Frame):
             self.manager_frame.show_frame('SettingsFrame')
 
 class SettingsFrame(tk.Frame):
-    def __init__(self, manager_frame):
-        tk.Frame.__init__(self, manager_frame)
+    def __init__(self, parent, manager_frame):
+        tk.Frame.__init__(self, parent)
         self.manager_frame = manager_frame
 
         self.create_widgets()
@@ -126,7 +129,7 @@ class SettingsFrame(tk.Frame):
         self.ordered_var = tk.BooleanVar()
         self.ordered_var.set(self.settings.ordered)
         self.ordered = tk.Checkbutton(
-            self.container, text="ordered", variable=self.loop_var)
+            self.container, text="ordered", variable=self.ordered_var)
 
         self.timer_var = tk.IntVar()
         self.timer_var.set(self.settings.timer)
@@ -143,7 +146,7 @@ class SettingsFrame(tk.Frame):
             self.chore_modes[class_name_chore_mode] = class_.MODE
         self.mode_var = tk.StringVar()
         self.modes = Combobox(
-            self.container, textvariable=self.mode_var, values=self.chore_modes.values())
+            self.container, textvariable=self.mode_var, values=list(self.chore_modes.values()))
         self.modes.current(0)
 
         self.container_source_file = tk.Frame(self.container)
