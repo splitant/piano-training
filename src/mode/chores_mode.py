@@ -36,15 +36,15 @@ class MinorMajorChoresMode(ChoresMode):
         super(MinorMajorChoresMode, self).__init__(chores, settings)
 
     def is_minor(self, chore):
-        return len(chore) == 1
+        return len(chore) == 1 and chore.isupper()
 
     def is_major(self, chore):
         return len(chore) == 2 and chore[len(chore) - 1] == 'm'
 
     def sortChores(self):
         super(MinorMajorChoresMode, self).sortChores()
-        self._chores = filter(lambda chore: self.is_major(
-            chore) or self.is_minor(chore), self._chores)
+        self._chores = list(filter(lambda chore: self.is_major(
+            chore) or self.is_minor(chore), self._chores))
 
 class SimpleChoresMode(ChoresMode):
     MODE = 'Single'
@@ -53,7 +53,7 @@ class SimpleChoresMode(ChoresMode):
         super(SimpleChoresMode, self).__init__(chores, settings)
 
     def is_simple(self, chore):
-        return len(chore) == 1
+        return len(chore) == 1 and chore.islower()
 
     def sortChores(self):
         super(SimpleChoresMode, self).sortChores()
