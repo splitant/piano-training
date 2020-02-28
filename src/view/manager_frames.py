@@ -3,6 +3,7 @@ try:
     import tkinter.filedialog
     import tkinter.messagebox
     from tkinter.ttk import Combobox
+    from tkinter import font
 except:
     import Tkinter as tk
     from ttk import Combobox
@@ -44,10 +45,16 @@ class ManagerFrames(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+        print(page_name)
+        if page_name == "ChoreFrame":
+            frame.change_chore()
+
 
 class HomepageFrame(tk.Frame):
     def __init__(self, parent, manager_frame):
         tk.Frame.__init__(self, parent)
+        self.grid_rowconfigure((0, 1, 2, 3), weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.manager_frame = manager_frame
 
         self.create_widgets()
@@ -58,10 +65,8 @@ class HomepageFrame(tk.Frame):
         self.button_settings = tk.Button(self, text="Settings",
                                          fg="black", command=self.button_settings_command)
 
-        '''self.button_play.grid(row=0, column=0, sticky='nesw', pady=10)
-        self.button_settings.grid(row=1, column=0, sticky='nesw', pady=10)'''
-        self.button_play.pack(pady=10, anchor=tk.CENTER)
-        self.button_settings.pack(pady=10, anchor=tk.CENTER)
+        self.button_play.grid(row=1, column=0, sticky='nesw', pady=20, padx=80)
+        self.button_settings.grid(row=2, column=0, sticky='nesw', pady=30, padx=80)
 
     def button_play_command(self):
         self.manager_frame.show_frame('ChoreFrame')
@@ -73,10 +78,13 @@ class HomepageFrame(tk.Frame):
 class ChoreFrame(tk.Frame):
     def __init__(self, parent, manager_frame):
         tk.Frame.__init__(self, parent)
+        self.grid_rowconfigure((0, 1), weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
         self.manager_frame = manager_frame
         self.index = 0
         self.chore_length = len(self.manager_frame.controller.choreMode.chores)
-        self.timeout = self.manager_frame.controller.settings.timer
+        self.timeout = (self.manager_frame.controller.settings.timer/1000)
 
         self.create_widgets()
 
@@ -84,18 +92,22 @@ class ChoreFrame(tk.Frame):
         chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
         chore_data_path_picture = self.manager_frame.controller.choreData[chore_data_label]
 
-        self.label_chore = tk.Label(self, text=chore_data_label)
+        font_label_chore = font.Font(
+            family="Helvetica", size=36, weight="bold")
+        self.label_chore = tk.Label(
+            self, text=chore_data_label, font=font_label_chore)
         self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
         self.label_picture_chore = tk.Label(self, image=self.picture_chore)
 
-        self.label_chore.grid(row=0, column=0, sticky='nesw', pady=10)
-        self.label_picture_chore.grid(row=1, column=0, sticky='nesw', pady=10)
+        self.label_chore.grid(row=0, column=0, sticky='s', pady=10)
+        self.label_picture_chore.grid(row=1, column=0, sticky='n', pady=10)
         self.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def change_chore(self):
         self.index = self.index + 1
 
         if self.index < self.chore_length:
+            print(self.timeout, self.chore_length, self.index)
             chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
             chore_data_path_picture = self.manager_frame.controller.choreData[chore_data_label]
             
