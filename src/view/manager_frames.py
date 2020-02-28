@@ -193,12 +193,12 @@ class SettingsFrame(tk.Frame):
         if len(error) > 0:
             tk.messagebox.showerror('Error', error)
         else:
-            self.settings.loop = self.loop_var.get()
-            self.settings.ordered = self.ordered_var.get()
-            self.settings.timer = self.timer_var.get()
-            self.settings.sourceFile = self.source_file_var.get()
-            self.settings.mode = self.chore_modes[self.mode_var.get()]
-            self.settings.saveSettings()
+            self.manager_frame.controller.settings.loop = self.loop_var.get()
+            self.manager_frame.controller.settings.ordered = self.ordered_var.get()
+            self.manager_frame.controller.settings.timer = self.timer_var.get()
+            self.manager_frame.controller.settings.sourceFile = self.source_file_var.get()
+            self.manager_frame.controller.settings.mode = self.chore_modes[self.mode_var.get()]
+            self.manager_frame.controller.settings.saveSettings()
             tk.messagebox.showinfo('Info', 'Settings updated.')
 
     def button_back_command(self):
