@@ -121,6 +121,6 @@ class SettingsChores:
 		return data[0] if data is not None else 0
 	
 	def availableModes(self):
-		return dict(inspect.getmembers(sys.modules["mode.chores_mode"], inspect.isclass)).keys()
+		return list(dict(inspect.getmembers(sys.modules["mode.chores_mode"], inspect.isclass)))
 
 

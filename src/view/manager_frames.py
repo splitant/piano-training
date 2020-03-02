@@ -28,7 +28,7 @@ class ManagerFrames(tk.Tk):
         self.create_frames()
 
     def create_frames(self):
-        for F in (HomepageFrame, ChoreFrame, SettingsFrame):
+        for F in (HomepageFrame, SettingsFrame):
             page_name = F.__name__
             frame = F(parent=self.container, manager_frame=self)
             self.frames[page_name] = frame
@@ -41,13 +41,15 @@ class ManagerFrames(tk.Tk):
         self.show_frame("HomepageFrame")
 
     def show_frame(self, page_name):
+        if page_name == "ChoreFrame":
+            self.frames[page_name] = ChoreFrame(
+                parent=self.container, manager_frame=self)
+            
+            self.frames[page_name].grid(row=0, column=0, sticky="nsew")
+        
         '''Show a frame for the given page name'''
         frame = self.frames[page_name]
         frame.tkraise()
-
-        print(page_name)
-        if page_name == "ChoreFrame":
-            frame.change_chore()
 
 
 class HomepageFrame(tk.Frame):
@@ -87,27 +89,23 @@ class ChoreFrame(tk.Frame):
         self.timeout = (self.manager_frame.controller.settings.timer/1000)
 
         self.create_widgets()
+        self.change_chore()
 
     def create_widgets(self):
-        chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
-        chore_data_path_picture = self.manager_frame.controller.choreData[chore_data_label]
-
         font_label_chore = font.Font(
             family="Helvetica", size=36, weight="bold")
         self.label_chore = tk.Label(
-            self, text=chore_data_label, font=font_label_chore)
-        self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
-        self.label_picture_chore = tk.Label(self, image=self.picture_chore)
+            self, font=font_label_chore)
+        self.label_picture_chore = tk.Label(self)
 
         self.label_chore.grid(row=0, column=0, sticky='s', pady=10)
         self.label_picture_chore.grid(row=1, column=0, sticky='n', pady=10)
         self.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def change_chore(self):
-        self.index = self.index + 1
-
         if self.index < self.chore_length:
             print(self.timeout, self.chore_length, self.index)
+            print(self.manager_frame.controller.choreMode)
             chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
             chore_data_path_picture = self.manager_frame.controller.choreData[chore_data_label]
             
@@ -115,10 +113,11 @@ class ChoreFrame(tk.Frame):
             self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
             self.label_picture_chore.config(image=self.picture_chore)
             
+            self.index = self.index + 1
             timer = thr.Timer(self.timeout, self.change_chore)
             timer.start()
         else:
-            self.manager_frame.show_frame('SettingsFrame')
+            self.manager_frame.show_frame('HomepageFrame')
 
 class SettingsFrame(tk.Frame):
     def __init__(self, parent, manager_frame):
@@ -150,13 +149,19 @@ class SettingsFrame(tk.Frame):
         module = i.import_module('mode.chores_mode')
         class_name_chore_modes = self.settings.availableModes()
         self.chore_modes = dict()
-        for class_name_chore_mode in class_name_chore_modes:
+
+        current_index = 0
+        for key, class_name_chore_mode in enumerate(class_name_chore_modes):
             class_ = getattr(module, class_name_chore_mode)
             self.chore_modes[class_.MODE] = class_name_chore_mode
+            
+            if class_name_chore_mode == self.settings.mode:
+                current_index = key
+
         self.mode_var = tk.StringVar()
         self.modes = Combobox(
-            self, textvariable=self.mode_var, values=list(self.chore_modes.keys()))
-        self.modes.current(0)
+            self, textvariable=self.mode_var, state="readonly", values=list(self.chore_modes.keys()))
+        self.modes.current(current_index)
 
         self.container_source_file = tk.Frame(self)
         self.source_file_var = tk.StringVar()
@@ -193,12 +198,13 @@ class SettingsFrame(tk.Frame):
         if len(error) > 0:
             tk.messagebox.showerror('Error', error)
         else:
-            self.manager_frame.controller.settings.loop = self.loop_var.get()
-            self.manager_frame.controller.settings.ordered = self.ordered_var.get()
-            self.manager_frame.controller.settings.timer = self.timer_var.get()
-            self.manager_frame.controller.settings.sourceFile = self.source_file_var.get()
-            self.manager_frame.controller.settings.mode = self.chore_modes[self.mode_var.get()]
-            self.manager_frame.controller.settings.saveSettings()
+            self.settings.loop = self.loop_var.get()
+            self.settings.ordered = self.ordered_var.get()
+            self.settings.timer = self.timer_var.get()
+            self.settings.sourceFile = self.source_file_var.get()
+            self.settings.mode = self.chore_modes[self.mode_var.get()]
+            self.settings.saveSettings()
+            self.manager_frame.controller = cont.ControllerChores()
             tk.messagebox.showinfo('Info', 'Settings updated.')
 
     def button_back_command(self):

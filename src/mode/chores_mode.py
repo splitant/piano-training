@@ -57,4 +57,4 @@ class SimpleChoresMode(ChoresMode):
 
     def sortChores(self):
         super(SimpleChoresMode, self).sortChores()
-        self._chores = filter(lambda chore: self.is_simple(chore), self._chores)
+        self._chores = list(filter(lambda chore: self.is_simple(chore), self._chores))
