@@ -98,22 +98,29 @@ class ChoreFrame(tk.Frame):
             self, font=font_label_chore)
         self.label_picture_chore = tk.Label(self)
 
-        self.label_chore.grid(row=0, column=0, sticky='s', pady=10)
-        self.label_picture_chore.grid(row=1, column=0, sticky='n', pady=10)
+        self.label_chore.grid(row=0, column=0, sticky='s', pady=10, padx=10)
+        self.label_picture_chore.grid(
+            row=1, column=0, sticky='n', pady=10, padx=10)
         self.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def change_chore(self):
-        if self.index < self.chore_length:
+        if (self.index < self.chore_length):
             print(self.timeout, self.chore_length, self.index)
             print(self.manager_frame.controller.choreMode)
             chore_data_label = self.manager_frame.controller.choreMode.chores[self.index]
             chore_data_path_picture = self.manager_frame.controller.choreData[chore_data_label]
             
             self.label_chore.config(text=chore_data_label)
-            self.picture_chore = ImageTk.PhotoImage(Image.open(chore_data_path_picture))
+
+            self.picture_chore = tk.PhotoImage(
+                file=chore_data_path_picture).zoom(1).subsample(2)
             self.label_picture_chore.config(image=self.picture_chore)
             
             self.index = self.index + 1
+
+            if self.manager_frame.controller.settings.loop and (self.index == self.chore_length):
+                self.index = 0
+
             timer = thr.Timer(self.timeout, self.change_chore)
             timer.start()
         else:
@@ -122,6 +129,9 @@ class ChoreFrame(tk.Frame):
 class SettingsFrame(tk.Frame):
     def __init__(self, parent, manager_frame):
         tk.Frame.__init__(self, parent)
+        self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
         self.manager_frame = manager_frame
 
         self.create_widgets()
@@ -183,13 +193,14 @@ class SettingsFrame(tk.Frame):
         self.button_save.grid(row=0, column=0, sticky='nesw', padx=5)
         self.button_back.grid(row=0, column=1, sticky='nesw', padx=5)
 
-        self.loop.grid(row=0, column=0, sticky='nesw', pady=10)
-        self.ordered.grid(row=1, column=0, sticky='nesw', pady=10)
-        self.timer.grid(row=2, column=0, sticky='nesw', pady=10)
-        self.modes.grid(row=3, column=0, sticky='nesw', pady=10)
+        self.loop.grid(row=0, column=0, sticky='w', pady=10, padx=20)
+        self.ordered.grid(row=1, column=0, sticky='w', pady=10, padx=20)
+        self.timer.grid(row=2, column=0, sticky='w', pady=10, padx=20)
+        self.modes.grid(row=3, column=0, sticky='w', pady=10, padx=20)
         self.container_source_file.grid(
-            row=4, column=0, sticky='nesw', pady=10)
-        self.container_buttons.grid(row=5, column=0, sticky='nesw', pady=10)
+            row=4, column=0, sticky='w', pady=10, padx=10)
+        self.container_buttons.grid(
+            row=5, column=0, sticky='w', pady=10, padx=10)
         self.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def button_save_command(self):
