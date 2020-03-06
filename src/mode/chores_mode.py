@@ -52,7 +52,8 @@ class SimpleChoresMode(ChoresMode):
     def __init__(self, chores, settings):
         super(SimpleChoresMode, self).__init__(chores, settings)
 
-    def is_simple(self, chore):
+    @staticmethod
+    def is_simple(chore):
         return len(chore) == 1 and chore.islower()
 
     def sortChores(self):

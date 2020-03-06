@@ -10,6 +10,7 @@ except:
 
 from PIL import Image, ImageTk
 import controller as cont
+import mode as chmd
 import threading as thr
 import importlib as i
 
@@ -112,8 +113,12 @@ class ChoreFrame(tk.Frame):
             
             self.label_chore.config(text=chore_data_label)
 
-            self.picture_chore = tk.PhotoImage(
-                file=chore_data_path_picture).zoom(1).subsample(2)
+            if chmd.SimpleChoresMode.is_simple(chore_data_label):
+                self.picture_chore = tk.PhotoImage(
+                    file=chore_data_path_picture).zoom(1).subsample(2)
+            else: 
+                self.picture_chore = tk.PhotoImage(file=chore_data_path_picture)
+
             self.label_picture_chore.config(image=self.picture_chore)
             
             self.index = self.index + 1
