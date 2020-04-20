@@ -12,6 +12,7 @@ class PianoTrainingMain:
         self.window.bind("<F11>", self.toggleFullScreen)
         self.window.bind("<Escape>", self.quitFullScreen)
         self.window.geometry('500x500')
+        self.window.tk.call('wm', 'iconphoto', self.window._w, tk.PhotoImage(file='../piano-training-ico.png'))
         self.window.mainloop()
 
     def toggleFullScreen(self, event):

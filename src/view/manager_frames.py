@@ -98,10 +98,15 @@ class ChoreFrame(tk.Frame):
         self.label_chore = tk.Label(
             self, font=font_label_chore)
         self.label_picture_chore = tk.Label(self)
+        self.button_back = tk.Button(self, text="Back",
+                                     fg="black", command=self.button_back_command)
 
         self.label_chore.grid(row=0, column=0, sticky='s', pady=10, padx=10)
         self.label_picture_chore.grid(
             row=1, column=0, sticky='n', pady=10, padx=10)
+        self.button_back.grid(
+            row=1, column=0, sticky='se', pady=10, padx=10)
+
         self.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def change_chore(self):
@@ -126,10 +131,14 @@ class ChoreFrame(tk.Frame):
             if self.manager_frame.controller.settings.loop and (self.index == self.chore_length):
                 self.index = 0
 
-            timer = thr.Timer(self.timeout, self.change_chore)
-            timer.start()
+            self.timer = thr.Timer(self.timeout, self.change_chore)
+            self.timer.start()
         else:
             self.manager_frame.show_frame('HomepageFrame')
+
+    def button_back_command(self):
+        self.timer.cancel()
+        self.manager_frame.show_frame('HomepageFrame')
 
 class SettingsFrame(tk.Frame):
     def __init__(self, parent, manager_frame):
