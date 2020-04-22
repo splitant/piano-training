@@ -8,7 +8,8 @@ import view as v
 class PianoTrainingMain:
     def __init__(self):
         self.window = v.ManagerFrames()
-        self.fullScreenState = False
+        self.fullScreenState = True
+        self.window.attributes("-fullscreen", self.fullScreenState)
         self.window.bind("<F11>", self.toggleFullScreen)
         self.window.bind("<Escape>", self.quitFullScreen)
         self.window.geometry('500x500')
