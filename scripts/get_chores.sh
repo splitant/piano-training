@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export PICTURES_DIRECTORY="pictures"
+export PDF_CHORDS="resources/300-accords-de-piano-guide-et-dictionnaire-2015.pdf"
+export PICTURES_DIRECTORY="../app/resources/pictures"
 export LAYOUT_DIRECTORY="$PICTURES_DIRECTORY/layout"
 export CHORDS_DIRECTORY="$PICTURES_DIRECTORY/chores"
 export SIMPLE_CHORDS_DIRECTORY="$PICTURES_DIRECTORY/simple_chores"
@@ -36,7 +37,7 @@ reset_chords () {
 # Extract pictures from PDF
 extract_pictures () {
 	echo -e "\n---- ${FUNCNAME[0]}  ----"
-	pdfimages -png -f 9 -l 33 300-accords-de-piano-guide-et-dictionnaire-2015.pdf $PICTURES_DIRECTORY"/"
+	pdfimages -png -f 9 -l 33 $PDF_CHORDS $PICTURES_DIRECTORY"/"
 	echo -e "-------   END   -------\n"
 }
 
@@ -88,3 +89,4 @@ get_chords () {
 	get_chords_from_pictures
 }
 
+get_chords
