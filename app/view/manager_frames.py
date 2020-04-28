@@ -9,17 +9,18 @@ except:
     from ttk import Combobox
 
 from PIL import Image, ImageTk
-import controller as cont
-import mode as chmd
-import threading as thr
-import importlib as i
+from controller import controller_chores
+from mode import chores_mode
+
+import threading
+import importlib
 
 class ManagerFrames(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.container = tk.Frame(self)
-        self.controller = cont.ControllerChores()
+        self.controller = controller_chores.ControllerChores()
         self.frames = {}
 
         self.container.pack(side="top", fill="both", expand=True)
@@ -128,7 +129,7 @@ class ChoreFrame(tk.Frame):
             
             self.label_chore.config(text=chore_data_label)
 
-            if chmd.SimpleChoresMode.is_simple(chore_data_label):
+            if chores_mode.SimpleChoresMode.is_simple(chore_data_label):
                 self.picture_chore = tk.PhotoImage(
                     file=chore_data_path_picture).zoom(1)
             else: 
@@ -142,7 +143,7 @@ class ChoreFrame(tk.Frame):
             if self.manager_frame.controller.settings.loop and (self.index == self.chore_length):
                 self.index = 0
 
-            self.timer = thr.Timer(self.timeout, self.change_chore)
+            self.timer = threading.Timer(self.timeout, self.change_chore)
             self.timer.start()
         else:
             self.manager_frame.show_frame('HomepageFrame')
@@ -184,7 +185,7 @@ class SettingsFrame(tk.Frame):
             resolution=100, length=350, variable=self.timer_var,
             label='Duration (ms)')
 
-        module = i.import_module('mode.chores_mode')
+        module = importlib.import_module('mode.chores_mode')
         class_name_chore_modes = self.settings.availableModes()
         self.chore_modes = dict()
 
@@ -243,7 +244,7 @@ class SettingsFrame(tk.Frame):
             self.settings.sourceFile = self.source_file_var.get()
             self.settings.mode = self.chore_modes[self.mode_var.get()]
             self.settings.saveSettings()
-            self.manager_frame.controller = cont.ControllerChores()
+            self.manager_frame.controller = controller_chores.ControllerChores()
             tk.messagebox.showinfo('Info', 'Settings updated.')
 
     def button_back_command(self):

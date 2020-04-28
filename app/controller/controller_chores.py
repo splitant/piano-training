@@ -1,8 +1,9 @@
 #!/usr/bin/python
 
-import settings as s
-import extract as e
-import importlib as i
+from settings import settings_chores
+from extract import extract_chores_from_csv
+
+import importlib
 
 class ControllerChores:
 
@@ -35,16 +36,16 @@ class ControllerChores:
 			self._choreMode = choreMode
 
 		def initChoresSettings(self):
-			self._settings = s.SettingsChores()
+			self._settings = settings_chores.SettingsChores()
 			self._settings.loadSettings()
 		
 		def initChoresData(self):
-			choresExtractCSV = e.ExtractChoresFromCSV(self._settings.sourceFile)
+			choresExtractCSV = extract_chores_from_csv.ExtractChoresFromCSV(self._settings.sourceFile)
 			choresExtractCSV.importChores()
 
 			self._choreData = choresExtractCSV.chores
 
-			module = i.import_module('mode.chores_mode')
+			module = importlib.import_module('mode.chores_mode')
 			class_ = getattr(module, self._settings.mode)
 			self._choreMode = class_(list(self._choreData), self._settings)
 			self._choreMode.sortChores()

@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['app/main.py'],
+a = Analysis(['app/app.py'],
              pathex=['/home/xlvd519/Desktop/piano_training'],
              binaries=[],
              datas=[('app/resources', 'resources')],

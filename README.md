@@ -1,37 +1,33 @@
-# piano-training
+# Piano training
 
-## Extract pictures from PDF
+Piano training is an app to learn solfege.
+It gathers more than 300 chores.
 
-```bash
-pdfimages -f 9 -l 33 -j 300-accords-de-piano-guide-et-dictionnaire-2015.pdf pictures/
-```
+Several modes are availables :
+* Simple : simple notes (c, d, e, f, g, h, a, b)
+* Minor - Major : complex chores (C, C+, Cm, Db2, etc...)
+* Normal : Mix simple notes and complex chores
 
-## Split a picture to get the whole chores
-
-```bash
-convert -013.jpg -crop 3x4@  +repage  +adjoin  013_chores_%d.jpg
-
-# Step 1 : split picture in raw.
-convert -013.jpg -crop 1x4@  +repage  +adjoin test_chores/013_chores_%d.jpg
-
-# Step 2 : Trim white space
-convert test_chores/013_chores_0.jpg -trim +repage test_chores/output_013_chores_0.jpg
-
-# Step 3 : Split and crop the raw picture
-convert test_chores/output_013_chores_0.jpg -crop 3x1-30-30@\!  +repage  +adjoin test_chores/output_2_013_chores_%d.jpg
-
-```
-
-## Divers
+## Requirements for development
 
 ```bash
-axel@axel-UX303LA[00:46:39]:~/Desktop/projects/piano-training/scripts$ namef="-toto.txt"
-axel@axel-UX303LA[00:48:07]:~/Desktop/projects/piano-training/scripts$ mv -- $namef ${namef#"-"}
+sudo apt install libcairo2-dev libgirepository1.0-dev libcups2-dev
+python3 -m pip install -r requirements.txt
 ```
-## Classes
 
-ExtractChoresFromCSV<br/>
-ChoresMode<br/>
-MajorMinorChoresMode<br/>
-AdvancedChoresMode<br/>
-SettingsChores<br/>
+## How to execute
+
+```bash
+cd dist/piano_training/
+./piano_training
+```
+
+## What about Windows ?
+
+An executable will come very soon !
+
+## And about a mobile app ?
+
+Soon maybe ;-)
+
+

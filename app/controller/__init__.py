@@ -1,1 +1,0 @@
-from controller.controller_chores import ControllerChores

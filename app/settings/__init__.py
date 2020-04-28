@@ -1,1 +1,0 @@
-from settings.settings_chores import SettingsChores
